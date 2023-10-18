@@ -24,7 +24,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -96,8 +98,8 @@ private fun GardenList(
     // Call reportFullyDrawn when the garden list has been rendered
     val gridState = rememberLazyGridState()
     ReportDrawnWhen { gridState.layoutInfo.totalItemsCount > 0 }
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(1),
         modifier,
         state = gridState,
         contentPadding = PaddingValues(
@@ -130,29 +132,35 @@ private fun GardenListItem(
 
     ElevatedCard(
         onClick = { onPlantClick(plant) },
-        modifier = Modifier.padding(
-            start = cardSideMargin,
-            end = cardSideMargin,
-            bottom = dimensionResource(id = R.dimen.card_bottom_margin)
-        ),
+        modifier = Modifier
+            .size(
+                    width = dimensionResource(id = R.dimen.card_width),
+                    height = dimensionResource(id = R.dimen.card_height)
+            )
+
+            .padding(
+                    start = cardSideMargin,
+                    end = cardSideMargin,
+                    bottom = dimensionResource(id = R.dimen.card_bottom_margin)
+            ),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
     ) {
         Column(Modifier.fillMaxWidth()) {
             SunflowerImage(
                 model = vm.imageUrl,
                 contentDescription = plant.plant.description,
-                Modifier
-                    .fillMaxWidth()
-                    .height(dimensionResource(id = R.dimen.plant_item_image_height)),
+                    Modifier
+                        .fillMaxWidth()
+                        .height(dimensionResource(id = R.dimen.plant_item_image_height)),
                 contentScale = ContentScale.Crop,
             )
 
             // Plant name
             Text(
                 text = vm.plantName,
-                Modifier
-                    .padding(vertical = marginNormal)
-                    .align(Alignment.CenterHorizontally),
+                    Modifier
+                        .padding(vertical = marginNormal)
+                        .align(Alignment.CenterHorizontally),
                 style = MaterialTheme.typography.titleMedium,
             )
 
@@ -171,9 +179,9 @@ private fun GardenListItem(
             // Last Watered
             Text(
                 text = stringResource(id = R.string.watered_date_header),
-                Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = marginNormal),
+                    Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = marginNormal),
                 style = MaterialTheme.typography.titleSmall
             )
             Text(
@@ -187,9 +195,9 @@ private fun GardenListItem(
                     count = vm.wateringInterval,
                     vm.wateringInterval
                 ),
-                Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(bottom = marginNormal),
+                    Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = marginNormal),
                 style = MaterialTheme.typography.labelSmall
             )
         }
